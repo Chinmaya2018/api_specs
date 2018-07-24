@@ -1,0 +1,1674 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: "IOC IntelliLinen Compare"
+  description: |
+    API specifications for IntelliLinen Solution Compare.
+
+    The x-api-key should be passed in Header for all API Calls.
+
+    There will be more HTTP responses apart from 200 like 401, 404, 500, 503.
+  contact:
+    name: Vijay Soni
+    email: vijay.soni@sealedair.com
+    url: http://sealedair.com
+host: AWS_HOST
+basePath: /api/v1/intellilinen
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /production/production-graph/compare:
+      post:
+        description: Compare Production graph data for Both Overview(E01 - LineChart) and Production(E01 - LineChart)
+                      Jira Ticket- DCPORTAL-2382
+                      URL- (https://seedigital.atlassian.net/browse/DCPORTAL-2382)
+        parameters:
+          - name: filters
+            in: body
+            description: Filters data to be sent
+            required: true
+            schema:
+              $ref: '#/definitions/requestGenericCompareFilters'
+          - name: x-api-key
+            in: header
+            type: string
+            required: true
+            default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+        responses:
+          200:
+            description: Production Response
+            schema:
+              $ref: '#/definitions/responseProductionCompare'
+
+  /quality/notifications-graph/compare:
+      post:
+        description:  Compare number of notifications sent for dispenser and washer error
+                      Jira Ticket- DCPORTAL-2644
+                      URL- (https://seedigital.atlassian.net/browse/DCPORTAL-2644?page=com.atlassian.jira.plugin.system.issuetabpanels%3Aall-tabpanel)
+        parameters:
+          - name: filters
+            in: body
+            description: Filters data to be sent
+            required: true
+            schema:
+              $ref: '#/definitions/requestGenericCompareFilters'
+          - name: x-api-key
+            in: header
+            type: string
+            required: true
+            default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+        responses:
+          200:
+            description: Notifications Response
+            schema:
+              $ref: '#/definitions/responseNotificationsCompare'
+          404:
+            description: Notifications Response when no data found
+            schema:
+              $ref: '#/definitions/responseGenericNodataFound'
+
+  /quality/rewashes/compare:
+    post:
+      description: Compare Quality re-wash graph for Overview(E02 - BarChart) & Quality(E01 - BarChart)
+                  Overview - Jira Ticket - DCPORTAL-2383
+                  URL- (https://seedigital.atlassian.net/browse/DCPORTAL-2383)
+                  Quality - Jira Ticket - DCPORTAL-2821
+                  URL- (https://seedigital.atlassian.net/browse/DCPORTAL-2821)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/requestGenericCompareFilters'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Quality rewash Responcse
+          schema:
+            $ref: '#/definitions/responseQualityRewashCompare'
+
+  /costs/compare:
+    post:
+      description: Compare Cost graph for Overview(E04 - BarChart)
+                    Jira Ticket - DCPORTAL-2385
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2385)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/requestGenericCompareFilters'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Cost Chart Responcse
+          schema:
+            $ref: '#/definitions/responseCostsCompare'
+
+  /production/utilization/occupancy-percentage/compare:
+    post:
+      description: Compare Utilization Occupancy-Percentage graph for Production(E02 - BarChart)
+                    JIRA Ticket - DCPORTAL-2495
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2495)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/requestGenericCompareFilters'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Utilization Occupancy-Percentage Chart Responcse
+          schema:
+            $ref: '#/definitions/responseUtilizationOccupancyCompare'
+
+  /production/utilization/capacity-percentage/compare:
+    post:
+      description: Compare Utilization Capacity-Percentage graph for Production(E02 - BarChart)
+                    Jira Ticket - DCPORTAL-2496
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2496)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/requestGenericCompareFilters'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Utilization Capacity-Percentage Chart Responcse
+          schema:
+            $ref: '#/definitions/responseUtilizationCapacityCompare'
+
+  /production/utilization/dryer-occupancy-percentage/compare:
+    post:
+      description: Compare Utilization Dryer-Occupancy graph for Production(E04 - BarChart)
+                    Jira Ticket - DCPORTAL-2497
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2497)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/requestGenericCompareFilters'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Utilization Dryer-Occupancy Chart Responcse
+          schema:
+            $ref: '#/definitions/responseDryerOccupancyCompare'
+
+  /quality/aborted-washes/compare:
+    post:
+      description: Compare Quality Aborted Washes Total graph for Quality(E03 - BarChart)
+                    Jira Ticket - DCPORTAL-2831
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2831)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/requestGenericCompareFilters'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Quality rewash Responcse
+          schema:
+            $ref: '#/definitions/responseQualityAbortedWashesCompare'
+
+  /quality/aborted-washes-percentage/compare:
+    post:
+      description: Compare Quality Aborted Washes Percentage graph for Quality(E03 - BarChart)
+                    Jira Ticket - DCPORTAL-2831
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2831)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/requestGenericCompareFilters'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Quality rewash Responcse
+          schema:
+            $ref: '#/definitions/responseQualityAbortedWashesPercentageCompare'
+
+  /consumption/water/compare:
+      post:
+        description: Compare Consumption graph data for Consumption water(E01 - LineChart)
+                    Jira Ticket - DCPORTAL-2841
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2841)
+        parameters:
+          - name: filters
+            in: body
+            description: Filters data to be sent
+            required: true
+            schema:
+              $ref: '#/definitions/requestGenericCompareFilters'
+          - name: x-api-key
+            in: header
+            type: string
+            required: true
+            default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+        responses:
+          200:
+            description: Water Consumption Response
+            schema:
+              $ref: '#/definitions/responseWaterConsumptionCompare'
+
+  /consumption/energy-washer/compare:
+      post:
+        description: Compare Consumption graph data for Consumption energy-washer(E02 - LineChart)
+                    Jira Ticket - DCPORTAL-2851
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2851)
+        parameters:
+          - name: filters
+            in: body
+            description: Filters data to be sent
+            required: true
+            schema:
+              $ref: '#/definitions/requestGenericCompareFilters'
+          - name: x-api-key
+            in: header
+            type: string
+            required: true
+            default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+        responses:
+          200:
+            description: Energy-Washer Consumption Response
+            schema:
+              $ref: '#/definitions/responseEnergyWasherDryerConsumptionCompare'
+
+  /consumption/products/compare:
+      post:
+        description: Compare Consumption graph data for Consumption products(Chemical)(E03 - LineChart)
+                    Jira Ticket - DCPORTAL-2846
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2846)
+        parameters:
+          - name: filters
+            in: body
+            description: Filters data to be sent
+            required: true
+            schema:
+              $ref: '#/definitions/requestGenericCompareFilters'
+          - name: x-api-key
+            in: header
+            type: string
+            required: true
+            default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+        responses:
+          200:
+            description: Products(Chemical) Consumption Response
+            schema:
+              $ref: '#/definitions/responseProductsConsumptionCompare'
+
+  /consumption/energy-dryer/compare:
+      post:
+        description: Compare Consumption graph data for Consumption energy-dryer(E02 - LineChart)
+                    Jira Ticket - DCPORTAL-2856
+                    URL - (https://seedigital.atlassian.net/browse/DCPORTAL-2856)
+        parameters:
+          - name: filters
+            in: body
+            description: Filters data to be sent
+            required: true
+            schema:
+              $ref: '#/definitions/requestGenericCompareFilters'
+          - name: x-api-key
+            in: header
+            type: string
+            required: true
+            default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+        responses:
+          200:
+            description: Energy-Dryer Consumption Response
+            schema:
+              $ref: '#/definitions/responseEnergyWasherDryerConsumptionCompare'
+
+definitions:
+  requestGenericCompareFilters:
+    type: object
+    required:
+      - email
+      - timezone
+      - filters
+    properties:
+      email:
+        type: string
+      units:
+        type: object
+      timezone:
+        type: string
+      filters:
+        type: object
+        $ref: "#/definitions/requestGenericCompareFiltersData"
+    example:
+      email: vijay.soni@sealedair.com
+      units:
+        weight: ''
+      timezone: 'Asia/Kolkata'
+      filters:
+        start_date: "2017-05-03T00:00:00Z"
+        end_date: "2017-05-03T23:59:59Z"
+        group_by: week
+        customer: "107"
+        sites:
+          - "207"
+        assets: []
+        classifications: []
+        shifts:
+          - "344"
+          - "278"
+          - "528"
+        compare_by: shift
+
+  requestGenericCompareFiltersData:
+    type: object
+    required:
+      - start_date
+      - end_date
+      - group_by
+      - customer
+      - sites
+      - assets
+      - classifications
+      - shifts
+      - compare_by
+    properties:
+      email:
+        type: string
+      start_date:
+        type: string
+        format: datetime
+        description: Start date timestamp in UTC format
+      end_date:
+        type: string
+        format: datetime
+        description: End date timestamp in UTC format
+      group_by:
+        type: string
+        enum:
+          - hour
+          - day
+          - week
+          - month
+      customer:
+        type: string
+      sites:
+        type: array
+        items:
+          type: string
+      assets:
+        type: array
+        items:
+          type: string
+      classifications:
+        type: array
+        items:
+          type: string
+      shifts:
+        type: array
+        items:
+          type: string
+      compare_by:
+        type: string
+        enum:
+          - site
+          - asset
+          - shift
+          
+  responseNotificationsCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - total_series
+          - compare
+        properties:
+          timezone:
+            type: string
+          total_series:
+            type: array
+            items:
+              type: object
+              required:
+                - datetime
+                - total
+              properties:
+                datetime:
+                  type: string
+                linen_washed:
+                  type: number
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - total
+                    properties:
+                      datetime:
+                        type: string
+                      total:
+                        type: number
+    example:
+      data:
+        timezone: 'Asia/Kolkata'
+        total_series:
+          - datetime: "2017-06-26T00:00"
+            total: 45
+          - datetime: "2017-06-27T00:00"
+            total: 44
+          - datetime: "2017-06-28T00:00"
+            total: 11
+          - datetime: "2017-06-29T00:00"
+            total: 77
+          - datetime: "2017-06-30T00:00"
+            total: 55
+          - datetime: "2017-07-01T00:00"
+            total: 66
+          - datetime: "2017-07-02T00:00"
+            total: 99
+        compare:
+          - name: site 1
+            series:
+              - datetime: "2017-06-26T00:00"
+                total: 77
+              - datetime: "2017-06-27T00:00"
+                total: 22
+              - datetime: "2017-06-28T00:00"
+                total: 99
+              - datetime: "2017-06-29T00:00"
+                total: 55
+              - datetime: "2017-06-30T00:00"
+                total: 77
+              - datetime: "2017-07-01T00:00"
+                total: 11
+              - datetime: "2017-07-02T00:00"
+                total: 88
+          - name: site 2
+            series:
+              - datetime: "2017-06-26T00:00"
+                total: 88
+              - datetime: "2017-06-27T00:00"
+                total: 11
+              - datetime: "2017-06-28T00:00"
+                total: 77
+              - datetime: "2017-06-29T00:00"
+                total: 22
+              - datetime: "2017-06-30T00:00"
+                total: 55
+              - datetime: "2017-07-01T00:00"
+                total: 33
+              - datetime: "2017-07-02T00:00"
+                total: 99
+
+  
+  
+  
+  responseProductionCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - unit
+          - timezone
+          - total
+          - total_series
+          - compare
+        properties:
+          unit:
+            type: string
+            enum:
+              - kg
+              - lbs
+          timezone:
+            type: string
+          total:
+            type: number
+          total_series:
+            type: array
+            items:
+              type: object
+              required:
+                - datetime
+                - linen_washed
+              properties:
+                datetime:
+                  type: string
+                linen_washed:
+                  type: number
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - linen_washed
+                    properties:
+                      datetime:
+                        type: string
+                      linen_washed:
+                        type: number
+    example:
+      data:
+        unit: lbs
+        timezone: 'Asia/Kolkata'
+        total: 425
+        total_series:
+          - datetime: "2017-06-26T00:00"
+            linen_washed: 45
+          - datetime: "2017-06-27T00:00"
+            linen_washed: 44
+          - datetime: "2017-06-28T00:00"
+            linen_washed: 11
+          - datetime: "2017-06-29T00:00"
+            linen_washed: 77
+          - datetime: "2017-06-30T00:00"
+            linen_washed: 55
+          - datetime: "2017-07-01T00:00"
+            linen_washed: 66
+          - datetime: "2017-07-02T00:00"
+            linen_washed: 99
+        compare:
+          - name: Shift 1
+            series:
+              - datetime: "2017-06-26T00:00"
+                linen_washed: 77
+              - datetime: "2017-06-27T00:00"
+                linen_washed: 22
+              - datetime: "2017-06-28T00:00"
+                linen_washed: 99
+              - datetime: "2017-06-29T00:00"
+                linen_washed: 55
+              - datetime: "2017-06-30T00:00"
+                linen_washed: 77
+              - datetime: "2017-07-01T00:00"
+                linen_washed: 11
+              - datetime: "2017-07-02T00:00"
+                linen_washed: 88
+          - name: Shift 2
+            series:
+              - datetime: "2017-06-26T00:00"
+                linen_washed: 88
+              - datetime: "2017-06-27T00:00"
+                linen_washed: 11
+              - datetime: "2017-06-28T00:00"
+                linen_washed: 77
+              - datetime: "2017-06-29T00:00"
+                linen_washed: 22
+              - datetime: "2017-06-30T00:00"
+                linen_washed: 55
+              - datetime: "2017-07-01T00:00"
+                linen_washed: 33
+              - datetime: "2017-07-02T00:00"
+                linen_washed: 99
+
+
+  responseQualityRewashCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - average
+          - compare
+        properties:
+          timezone:
+            type: string
+          average:
+            type: number
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - rewash
+                      - percentage
+                    properties:
+                      datetime:
+                        type: string
+                      rewash:
+                        type: number
+                      percentage:
+                        type: number
+    example:
+      data:
+        timezone: 'Asia/Kolkata'
+        average: 84
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                rewash: 27
+                percentage: 48
+              - datetime: "2017-06-27T00:00"
+                rewash: 34
+                percentage: 20
+              - datetime: "2017-06-28T00:00"
+                rewash: 52
+                percentage: 64
+              - datetime: "2017-06-29T00:00"
+                rewash: 19
+                percentage: 43
+              - datetime: "2017-06-30T00:00"
+                rewash: 30
+                percentage: 26
+              - datetime: "2017-06-01T00:00"
+                rewash: 64
+                percentage: 50
+              - datetime: "2017-06-02T00:00"
+                rewash: 30
+                percentage: 18
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                rewash: 57
+                percentage: 14
+              - datetime: "2017-06-27T00:00"
+                rewash: 24
+                percentage: 58
+              - datetime: "2017-06-28T00:00"
+                rewash: 43
+                percentage: 82
+              - datetime: "2017-06-29T00:00"
+                rewash: 12
+                percentage: 21
+              - datetime: "2017-06-30T00:00"
+                rewash: 38
+                percentage: 62
+              - datetime: "2017-06-01T00:00"
+                rewash: 42
+                percentage: 28
+              - datetime: "2017-06-02T00:00"
+                rewash: 12
+                percentage: 45
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                rewash: 12
+                percentage: 44
+              - datetime: "2017-06-27T00:00"
+                rewash: 20
+                percentage: 59
+              - datetime: "2017-06-28T00:00"
+                rewash: 38
+                percentage: 12
+              - datetime: "2017-06-29T00:00"
+                rewash: 49
+                percentage: 68
+              - datetime: "2017-06-30T00:00"
+                rewash: 56
+                percentage: 49
+              - datetime: "2017-06-01T00:00"
+                rewash: 42
+                percentage: 28
+              - datetime: "2017-06-02T00:00"
+                rewash: 12
+                percentage: 45
+
+  responseCostsCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - total
+          - compare
+        properties:
+          timezone:
+            type: string
+          total:
+            type: number
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - total_cost
+                    properties:
+                      datetime:
+                        type: string
+                      total_cost:
+                        type: number
+    example:
+      data:
+        timezone: 'Asia/Kolkata'
+        total: 84
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_cost: 27
+              - datetime: "2017-06-27T00:00"
+                total_cost: 34
+              - datetime: "2017-06-28T00:00"
+                total_cost: 52
+              - datetime: "2017-06-29T00:00"
+                total_cost: 19
+              - datetime: "2017-06-30T00:00"
+                total_cost: 30
+              - datetime: "2017-06-01T00:00"
+                total_cost: 34
+              - datetime: "2017-06-02T00:00"
+                total_cost: 52
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_cost: 57
+              - datetime: "2017-06-27T00:00"
+                total_cost: 24
+              - datetime: "2017-06-28T00:00"
+                total_cost: 43
+              - datetime: "2017-06-29T00:00"
+                total_cost: 12
+              - datetime: "2017-06-30T00:00"
+                total_cost: 38.8
+              - datetime: "2017-06-01T00:00"
+                total_cost: 12
+              - datetime: "2017-06-02T00:00"
+                total_cost: 45
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_cost: 12
+              - datetime: "2017-06-27T00:00"
+                total_cost: 20
+              - datetime: "2017-06-28T00:00"
+                total_cost: 38
+              - datetime: "2017-06-29T00:00"
+                total_cost: 49
+              - datetime: "2017-06-30T00:00"
+                total_cost: 56
+              - datetime: "2017-06-01T00:00"
+                total_cost: 12
+              - datetime: "2017-06-02T00:00"
+                total_cost: 34
+
+  responseUtilizationOccupancyCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - compare
+          - timezone
+        properties:
+          timezone:
+            type: string
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - usage
+                    properties:
+                      datetime:
+                        type: string
+                      usage:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 52
+              - datetime: "2017-06-27T00:00"
+                usage: 42
+              - datetime: "2017-06-28T00:00"
+                usage: 28
+              - datetime: "2017-06-29T00:00"
+                usage: 23
+              - datetime: "2017-06-30T00:00"
+                usage: 56
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 27
+              - datetime: "2017-06-27T00:00"
+                usage: 69
+              - datetime: "2017-06-28T00:00"
+                usage: 45
+              - datetime: "2017-06-29T00:00"
+                usage: 62
+              - datetime: "2017-06-30T00:00"
+                usage: 28
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 75
+              - datetime: "2017-06-27T00:00"
+                usage: 30
+              - datetime: "2017-06-28T00:00"
+                usage: 65
+              - datetime: "2017-06-29T00:00"
+                usage: 49
+              - datetime: "2017-06-30T00:00"
+                usage: 56
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+
+  responseUtilizationCapacityCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - compare
+          - timezone
+        properties:
+          timezone:
+            type: string
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - usage
+                    properties:
+                      datetime:
+                        type: string
+                      usage:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 23
+              - datetime: "2017-06-27T00:00"
+                usage: 57
+              - datetime: "2017-06-28T00:00"
+                usage: 22
+              - datetime: "2017-06-29T00:00"
+                usage: 43
+              - datetime: "2017-06-30T00:00"
+                usage: 23
+              - datetime: "2017-06-01T00:00"
+                usage: 46
+              - datetime: "2017-06-02T00:00"
+                usage: 26
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 45
+              - datetime: "2017-06-27T00:00"
+                usage: 21
+              - datetime: "2017-06-28T00:00"
+                usage: 32
+              - datetime: "2017-06-29T00:00"
+                usage: 62
+              - datetime: "2017-06-30T00:00"
+                usage: 54
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 54
+              - datetime: "2017-06-27T00:00"
+                usage: 46
+              - datetime: "2017-06-28T00:00"
+                usage: 62
+              - datetime: "2017-06-29T00:00"
+                usage: 32
+              - datetime: "2017-06-30T00:00"
+                usage: 47
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+
+  responseDryerOccupancyCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - total
+          - compare
+        properties:
+          timezone:
+            type: string
+          total:
+            type: number
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - occupancy
+                    properties:
+                      datetime:
+                        type: string
+                      occupancy:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        total: "85"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                occupancy: 42
+              - datetime: "2017-06-27T00:00"
+                occupancy: 24
+              - datetime: "2017-06-28T00:00"
+                occupancy: 58
+              - datetime: "2017-06-29T00:00"
+                occupancy: 47
+              - datetime: "2017-06-30T00:00"
+                occupancy: 39
+              - datetime: "2017-06-01T00:00"
+                occupancy: 26
+              - datetime: "2017-06-02T00:00"
+                occupancy: 46
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                occupancy: 27
+              - datetime: "2017-06-27T00:00"
+                occupancy: 48
+              - datetime: "2017-06-28T00:00"
+                occupancy: 64
+              - datetime: "2017-06-29T00:00"
+                occupancy: 58
+              - datetime: "2017-06-30T00:00"
+                occupancy: 68
+              - datetime: "2017-06-01T00:00"
+                occupancy: 26
+              - datetime: "2017-06-02T00:00"
+                occupancy: 46
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                occupancy: 54
+              - datetime: "2017-06-27T00:00"
+                occupancy: 48
+              - datetime: "2017-06-28T00:00"
+                occupancy: 34
+              - datetime: "2017-06-29T00:00"
+                occupancy: 42
+              - datetime: "2017-06-30T00:00"
+                occupancy: 52
+              - datetime: "2017-06-01T00:00"
+                occupancy: 26
+              - datetime: "2017-06-02T00:00"
+                occupancy: 46
+
+  responseQualityAbortedWashesCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - compare
+        properties:
+          timezone:
+            type: string
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - usage
+                    properties:
+                      datetime:
+                        type: string
+                      usage:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 48
+              - datetime: "2017-06-27T00:00"
+                usage: 20
+              - datetime: "2017-06-28T00:00"
+                usage: 64
+              - datetime: "2017-06-29T00:00"
+                usage: 43
+              - datetime: "2017-06-30T00:00"
+                usage: 26
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 14
+              - datetime: "2017-06-27T00:00"
+                usage: 58
+              - datetime: "2017-06-28T00:00"
+                usage: 82
+              - datetime: "2017-06-29T00:00"
+                usage: 21
+              - datetime: "2017-06-30T00:00"
+                usage: 62
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                usage: 44
+              - datetime: "2017-06-27T00:00"
+                usage: 59
+              - datetime: "2017-06-28T00:00"
+                usage: 12
+              - datetime: "2017-06-29T00:00"
+                usage: 68
+              - datetime: "2017-06-30T00:00"
+                usage: 49
+              - datetime: "2017-06-01T00:00"
+                usage: 26
+              - datetime: "2017-06-02T00:00"
+                usage: 46
+
+  responseQualityAbortedWashesPercentageCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - compare
+          - timezone
+        properties:
+          timezone:
+            type: string
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - completed_washes
+                      - aborted_washes
+                    properties:
+                      datetime:
+                        type: string
+                      completed:
+                        type: number
+                      aborted:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                completed_washes: 20
+                aborted_washes: 80
+              - datetime: "2017-06-27T00:00"
+                completed_washes: 60
+                aborted_washes: 40
+              - datetime: "2017-06-28T00:00"
+                completed_washes: 25
+                aborted_washes: 75
+              - datetime: "2017-06-29T00:00"
+                completed_washes: 85
+                aborted_washes: 15
+              - datetime: "2017-06-30T00:00"
+                completed_washes: 30
+                aborted_washes: 70
+              - datetime: "2017-06-01T00:00"
+                completed_washes: 43
+                aborted_washes: 26
+              - datetime: "2017-06-02T00:00"
+                completed_washes: 53
+                aborted_washes: 35
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                completed_washes: 50
+                aborted_washes: 50
+              - datetime: "2017-06-27T00:00"
+                completed_washes: 35
+                aborted_washes: 65
+              - datetime: "2017-06-28T00:00"
+                completed_washes: 85
+                aborted_washes: 15
+              - datetime: "2017-06-29T00:00"
+                completed_washes: 20
+                aborted_washes: 80
+              - datetime: "2017-06-30T00:00"
+                completed_washes: 75
+                aborted_washes: 25
+              - datetime: "2017-06-01T00:00"
+                completed_washes: 43
+                aborted_washes: 26
+              - datetime: "2017-06-02T00:00"
+                completed_washes: 53
+                aborted_washes: 35
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                completed_washes: 25
+                aborted_washes: 75
+              - datetime: "2017-06-27T00:00"
+                completed_washes: 90
+                aborted_washes: 10
+              - datetime: "2017-06-28T00:00"
+                completed_washes: 20
+                aborted_washes: 80
+              - datetime: "2017-06-29T00:00"
+                completed_washes: 45
+                aborted_washes: 55
+              - datetime: "2017-06-30T00:00"
+                completed_washes: 30
+                aborted_washes: 70
+              - datetime: "2017-06-01T00:00"
+                completed_washes: 43
+                aborted_washes: 26
+              - datetime: "2017-06-02T00:00"
+                completed_washes: 53
+                aborted_washes: 35
+
+  responseWaterConsumptionCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - unit
+          - compare
+        properties:
+          timezone:
+            type: string
+          unit:
+            type: string
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - total_usage
+                      - per_linen_usage
+                    properties:
+                      datetime:
+                        type: string
+                      total_usage:
+                        type: number
+                      per_linen_usage:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        unit: "m3"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 25
+                per_linen_usage: 75
+              - datetime: "2017-06-27T00:00"
+                total_usage: 90
+                per_linen_usage: 10
+              - datetime: "2017-06-28T00:00"
+                total_usage: 20
+                per_linen_usage: 80
+              - datetime: "2017-06-29T00:00"
+                total_usage: 45
+                per_linen_usage: 55
+              - datetime: "2017-06-30T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 52
+                per_linen_usage: 31
+              - datetime: "2017-06-27T00:00"
+                total_usage: 24
+                per_linen_usage: 61
+              - datetime: "2017-06-28T00:00"
+                total_usage: 44
+                per_linen_usage: 12
+              - datetime: "2017-06-29T00:00"
+                total_usage: 68
+                per_linen_usage: 55
+              - datetime: "2017-06-30T00:00"
+                total_usage: 15
+                per_linen_usage: 70
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 67
+                per_linen_usage: 14
+              - datetime: "2017-06-27T00:00"
+                total_usage: 34
+                per_linen_usage: 56
+              - datetime: "2017-06-28T00:00"
+                total_usage: 26
+                per_linen_usage: 24
+              - datetime: "2017-06-29T00:00"
+                total_usage: 76
+                per_linen_usage: 25
+              - datetime: "2017-06-30T00:00"
+                total_usage: 56
+                per_linen_usage: 70
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+
+  responseEnergyWasherDryerConsumptionCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - unit
+          - compare
+        properties:
+          timezone:
+            type: string
+          unit:
+            type: string
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - total_usage
+                      - per_linen_usage
+                    properties:
+                      datetime:
+                        type: string
+                      total_usage:
+                        type: number
+                      per_linen_usage:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        unit: "kWh"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 53
+                per_linen_usage: 12
+              - datetime: "2017-06-27T00:00"
+                total_usage: 25
+                per_linen_usage: 54
+              - datetime: "2017-06-28T00:00"
+                total_usage: 31
+                per_linen_usage: 80
+              - datetime: "2017-06-29T00:00"
+                total_usage: 68
+                per_linen_usage: 24
+              - datetime: "2017-06-30T00:00"
+                total_usage: 56
+                per_linen_usage: 70
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 67
+                per_linen_usage: 15
+              - datetime: "2017-06-27T00:00"
+                total_usage: 32
+                per_linen_usage: 72
+              - datetime: "2017-06-28T00:00"
+                total_usage: 15
+                per_linen_usage: 60
+              - datetime: "2017-06-29T00:00"
+                total_usage: 62
+                per_linen_usage: 22
+              - datetime: "2017-06-30T00:00"
+                total_usage: 22
+                per_linen_usage: 42
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 14
+                per_linen_usage: 67
+              - datetime: "2017-06-27T00:00"
+                total_usage: 56
+                per_linen_usage: 34
+              - datetime: "2017-06-28T00:00"
+                total_usage: 24
+                per_linen_usage: 36
+              - datetime: "2017-06-29T00:00"
+                total_usage: 21
+                per_linen_usage: 74
+              - datetime: "2017-06-30T00:00"
+                total_usage: 62
+                per_linen_usage: 42
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+
+  responseProductsConsumptionCompare:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - timezone
+          - unit
+          - compare
+        properties:
+          timezone:
+            type: string
+          unit:
+            type: string
+          compare:
+            type: array
+            items:
+              type: object
+              required:
+                - name
+                - series
+              properties:
+                name:
+                  type: string
+                series:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - datetime
+                      - total_usage
+                      - per_linen_usage
+                    properties:
+                      datetime:
+                        type: string
+                      total_usage:
+                        type: number
+                      per_linen_usage:
+                        type: number
+    example:
+      data:
+        timezone: "Asia/Kolkata"
+        unit: "l"
+        compare:
+          - name: "Shift 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 35
+                per_linen_usage: 70
+              - datetime: "2017-06-27T00:00"
+                total_usage: 65
+                per_linen_usage: 24
+              - datetime: "2017-06-28T00:00"
+                total_usage: 22
+                per_linen_usage: 80
+              - datetime: "2017-06-29T00:00"
+                total_usage: 44
+                per_linen_usage: 54
+              - datetime: "2017-06-30T00:00"
+                total_usage: 62
+                per_linen_usage: 12
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+          - name: "Shift 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 67
+                per_linen_usage: 15
+              - datetime: "2017-06-27T00:00"
+                total_usage: 32
+                per_linen_usage: 72
+              - datetime: "2017-06-28T00:00"
+                total_usage: 15
+                per_linen_usage: 60
+              - datetime: "2017-06-29T00:00"
+                total_usage: 62
+                per_linen_usage: 22
+              - datetime: "2017-06-30T00:00"
+                total_usage: 22
+                per_linen_usage: 42
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+          - name: "Shift 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                total_usage: 14
+                per_linen_usage: 67
+              - datetime: "2017-06-27T00:00"
+                total_usage: 56
+                per_linen_usage: 34
+              - datetime: "2017-06-28T00:00"
+                total_usage: 24
+                per_linen_usage: 36
+              - datetime: "2017-06-29T00:00"
+                total_usage: 21
+                per_linen_usage: 74
+              - datetime: "2017-06-30T00:00"
+                total_usage: 62
+                per_linen_usage: 42
+              - datetime: "2017-06-01T00:00"
+                total_usage: 27
+                per_linen_usage: 42
+              - datetime: "2017-06-02T00:00"
+                total_usage: 30
+                per_linen_usage: 70
+                
+  responseGenericNodataFound:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: number
+      message:
+        type: string
+    
+    example:
+        code: 404
+        message: 'No data available'

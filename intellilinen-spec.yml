@@ -1,0 +1,2898 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: "IOC IntelliLinen"
+  description: |
+    API specifications for IntelliLinen Solution.
+
+    The x-api-key should be passed in Header for all API Calls.
+
+    There will be more HTTP responses apart from 200 like 401, 404, 500, 503.
+  contact:
+    name: Vijay Soni
+    email: vijay.soni@sealedair.com
+    url: http://sealedair.com
+host: AWS_HOST
+basePath: /api/v1/intellilinen
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /filter-options:
+    post:
+      description: Get Filter Data
+      parameters:
+        - name: filters
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/filterOptionsRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0  
+      responses:
+        200:
+          description: Response for Filter Options
+          schema:
+            $ref: '#/definitions/filterOptionsResponse'
+  /filter-options/sites:
+    post:
+      description: Get Assets and shifts mapped to a site
+      parameters:
+        - name: sites
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/filterOptionsSitesRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Response for Filter Options Sites
+          schema:
+            $ref: '#/definitions/filterOptionsSitesResponse'
+  /dashboard/single-site:
+    post:
+      description: Get single site view for intellilinen
+      parameters:
+        - name: filters
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/singleSiteRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: 'Response for Dashboard single site.
+                        Responce should return enum values:
+                        MEETING_THRESHOLD (if site is meeting the threshold),
+                        NOT_MEETING_THRESHOLD (if site is not meeting the threshold),
+                        NO_THRESHOLD (if no threshold value is set)
+                        for both quality and production'
+          schema:
+            $ref: '#/definitions/singleSiteResponse'
+  
+  /dashboard/multiple-site:
+    post:
+      description: Get multiple site view for intellilinen
+      parameters:
+        - name: filters
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/multipleSiteRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0  
+      responses:
+        200:
+          description: Response for Filter Options
+          schema:
+            $ref: '#/definitions/multipleSiteResponse'
+  
+  
+  /production/production-graph:
+    post:
+      description: Get production graph data for Both Overview(E01 - LineChart) and Production(E01 - LineChart)  
+                    For group by hour it will be 24 datapoints, for group by week 7 datapoints, for group by month 4 datapoints and for group by 6 months 6 datapoints. 
+                    Same for every chart
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Production Response
+          schema:
+            $ref: '#/definitions/production'
+        401:
+          description: Unauthorized Access
+          schema:
+            $ref: '#/definitions/UnauthorizedAccessError'
+        404:
+          description: No data available
+          schema:
+            $ref: '#/definitions/NoDataAvailableError'
+        412:
+          description: No data available
+          schema:
+            $ref: '#/definitions/NoDataAvailableError'
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+        503:
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/ServiceUnavailableError'
+
+  /quality/rewashes:
+    post:
+      description: Get Quality graph data for Overview(E02 - Bar Chart) and Quality(E01 - Bar Chart, E01 - Total)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Quality Rewash Response
+          schema:
+            $ref: '#/definitions/qualityRewashes'
+
+  /consumption/combo-data:
+    post:
+      description: Get consumption compare graph data for Overview(E03 - Mixed Bar and Line Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Consumption  Response
+          schema:
+            $ref: '#/definitions/consumptionComboData'
+
+  /costs:
+    post:
+      description: Get cost graph data for Overview(E04 - Stacked Bar Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Cost Response
+          schema:
+            $ref: '#/definitions/costs'
+
+  /costs/overall-cost:
+    post:
+      description: Get cost graph data for overall cost(E04 - Stacked Bar Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Cost Response
+          schema:
+            $ref: '#/definitions/overall-cost'
+
+  /production/utilization/occupancy-percentage:
+    post:
+      description: Get Production Occupancy Utilization Graph Data(E02 Occupancy - Bar Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Production Occupancy Utilization Response
+          schema:
+            $ref: '#/definitions/productionOccupancyUtilization'
+
+  /production/utilization/capacity-percentage:
+    post:
+      description: Get Production Capacity Utilization Graph Data(E02 Capacity - Bar Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Production Capacity Utilization Response
+          schema:
+            $ref: '#/definitions/productionCapacityUtilization'
+
+  /production/classifications-percentage:
+    post:
+      description: Get production classification Graph Data(E03 - Pie Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Production Classification Response
+          schema:
+            $ref: '#/definitions/productionClassificationsPercentage'
+
+  /production/classifications:
+    post:
+      description: Get production classification graph data(E03 Total - Stacked Bar Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Production Classification Response
+          schema:
+            $ref: '#/definitions/productionClassifications'
+
+  /production/dryer-occupancy-percentage:
+    post:
+      description: Get production dryer occupancy graph data(E04 - Bar Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Production Dryer Occupancy Response
+          schema:
+            $ref: '#/definitions/productionDryerOccupancy'
+
+  /quality/notifications-percentage:
+    post:
+      description: Get Notifications for Quality Graph Data(E02 Percentage - Pie Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Notification for Quality Response
+          schema:
+            $ref: '#/definitions/qualityNotificationsPercentage'
+        412:
+          description: When no notification from API
+          schema:
+            $ref: '#/definitions/qualityNotificationsPercentageNoData'
+
+  /quality/notifications:
+    post:
+      description: Get Notification for Quality Graph Data(E02 Total - Bar Chart)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Notification for Quality Response
+          schema:
+            $ref: '#/definitions/simpleviewNotifications'
+        412:
+          description: When no notification from API
+          schema:
+            $ref: '#/definitions/qualityNotificationsPercentageNoData'
+
+  /quality/aborted-washes-percentage:
+    post:
+      description: Get aborted Washes for Quality Graph Data(E03 Percentage)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Aborted Washes for Quality Response
+          schema:
+            $ref: '#/definitions/qualityAbortedWashesPercentage'
+
+  /quality/aborted-washes:
+    post:
+      description: Get Aborted Washes for Quality Graph Data(E03 Total)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Aborted Washes for Quality Response
+          schema:
+            $ref: '#/definitions/qualityAbortedWashes'
+
+  /consumption/water:
+    post:
+      description: Get Water Volume Spent for Consumption Graph Data(E01 - Total, E01 - Per Linen)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0            
+      responses:
+        200:
+          description: Water Volume Spent for Consumption Response
+          schema:
+            $ref: '#/definitions/consumptionWater'
+
+  /consumption/energy-washer:
+    post:
+      description: Get Energy on Washer Spent for Consumption Graph Data(E02 - Total, E02 - Per Linen)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Energy on Washer Spent for Consumption Response
+          schema:
+            $ref: '#/definitions/consumptionEnergyWasher'
+
+  /consumption/products:
+    post:
+      description: Get product spent for consumption graph data(E03 - Total, E03 - Per Linen)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: Product Spent for Consumption Response
+          schema:
+            $ref: '#/definitions/consumptionProduct'
+
+  /consumption/energy-dryer:
+    post:
+      description: Get Product Spent for consumption Graph Data(E04 - Total, E04 - Per Linen)
+      parameters:
+        - name: filters
+          in: body
+          description: Filters data to be sent
+          required: true
+          schema:
+            $ref: '#/definitions/genericFilterRequest'
+        - name: x-api-key
+          in: header
+          type: string
+          required: true
+          default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+      responses:
+        200:
+          description: product spent for consumption response
+          schema:
+            $ref: '#/definitions/consumptionEnergyDryer'
+
+  #  # Commented as of now unitl assets doubts are cleared (Story not yet picked)
+  # /sites/{site_id}/dispensers:
+  #   post:
+  #     description: 'Get list of all dispensers for the specific site
+  #                   https://seedigital.atlassian.net/browse/DCPORTAL-1298'
+  #     parameters:
+  #       - in: path
+  #         name: site_id
+  #         required: true
+  #         type: string
+  #         defualt: 123
+  #       - in: body
+  #         name: dispensers
+  #         required: true
+  #         schema:
+  #           $ref: '#/definitions/requestDispensers'
+  #       - name: x-api-key
+  #         in: header
+  #         type: string
+  #         required: true
+  #         default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+  #     responses:
+  #       200:
+  #         description: 'Successfully Get all the Dispensers
+  #                       NOTE: As of now image value should return null value,
+  #                       but later will change to return the image value'
+  #         schema:
+  #           $ref: '#/definitions/responseDispensers200'
+
+  # /sites/{site_id}/dispensers/{dispenser_id}/washers:
+  #   post:
+  #     description: 'Get list of all washer detais for the specific dispenser
+  #                   https://seedigital.atlassian.net/browse/DCPORTAL-1298'
+  #     parameters:
+  #       - in: path
+  #         name: dispenser_id
+  #         required: true
+  #         type: string
+  #         default: 345
+  #       - in: path
+  #         name: site_id
+  #         required: true
+  #         type: string
+  #         default: 123
+  #       - in: body
+  #         name: dispensers
+  #         required: true
+  #         schema:
+  #           $ref: '#/definitions/requestWashers'
+  #       - name: x-api-key
+  #         in: header
+  #         type: string
+  #         required: true
+  #         default: 979dumKkqJoaARJo6W8zobAGdHVDKI9g13zxcXc0
+  #     responses:
+  #       200:
+  #         description: 'Successfully Get all the Dispensers.
+  #                       NOTE: As of now image value should return null value,
+  #                       but later will change to return the image value'
+  #         schema:
+  #           $ref: '#/definitions/responseWashers200'
+
+definitions:
+  filterOptionsRequest:
+    type: object
+    required:
+      - filters
+    properties:
+      filters:
+        type: object
+        required:
+          - email
+        properties:
+          email:
+            type: string
+            format: email
+    example:
+      filters:
+        email: vijay.soni@sealedair.com
+  filterOptionsSitesRequest:
+    type: object
+    required:
+      - sites
+    properties:
+      sites:
+        type: array
+        items:
+          type: string
+    example:
+      sites:
+      - 'st100'
+      - 'st200'
+  filterOptionsSitesResponse:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        properties:
+          sites:
+            type: array
+            required:
+              - id
+              - name
+              - assets
+              - shifts
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              assets:
+                type: array
+                items: 
+                  type: object
+                required:
+                  - id
+                  - name
+                  - kind
+                  - classification
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  kind:
+                    type: string
+                  classification:
+                    type: array
+                    items:
+                      type: string
+                      
+              shifts: 
+                type: array
+                items:
+                  type: object
+                required:
+                  - id
+                  - name
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+    example:
+      data:
+        sites:
+          - id: st100
+            name: bangalore site
+            assets:
+              - id: baf9bce5-1498-48fe-be77-b6b90532c201
+                name: samsung washer1
+                kind: washer
+                classification:
+                  - bedlinen
+                  - towel
+              - id: 5652d99b-57ad-403a-8754-3416abe7e9b4
+                name: electrolux washer
+                kind: washer
+                classification:
+                  - pillow covers
+                  - jeans
+                  - shirts
+            shifts:
+              - id: caf9bce5-1498-48fe-be77-b6b90532c201
+                name: morningshift
+              - id: caf9bce5-1498-48fe-be77-b6b90532c201
+                name: afternoonshift
+          - id: st200
+            name: chennai site
+            assets:
+              - id: gaf9bce5-1498-48fe-be77-b6b90532c201
+                name: IFB washer1
+                kind: washer
+                classification:
+                  - curtains
+                  - towel
+            shifts:
+              - id: kaf9bce5-1498-48fe-be77-b6b90532c201
+                name: morningshift
+              
+                
+              
+          
+  filterOptionsResponse:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        properties:
+          customers:
+            type: array
+            required:
+              - id
+              - name
+              - number
+              - countries
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              number:
+                type: number
+              countries:
+                type: array
+                items:
+                  type: object
+                required:
+                  - name
+                  - cities
+                properties:
+                  name:
+                    type: string
+                  cities:
+                    type: array
+                    items:
+                      type: object
+                    required:
+                      - id
+                      - name
+                      - sites
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      sites:
+                        type: array
+                        items:
+                          type: object
+                        required:
+                          - id
+                          - name
+                          - assets
+                          - shifts
+                        properties:
+                          id:
+                            type: string
+                          name: 
+                            type: string
+                          assets:
+                            type: array
+                            items:
+                              type: object
+                            required:
+                              - id
+                              - name
+                              - kind
+                              - classification
+                            properties:
+                              id: 
+                                type: string
+                              name:
+                                type: string
+                              kind:
+                                type: string
+                              classification:
+                                type: string
+                          shifts:
+                            type: array
+                            items:
+                              type: object
+                            required:
+                              - id
+                              - name
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                            
+    example:
+      data:
+        customers:
+          - id: Cust107
+            name: Customer 1
+            number: 7000
+            countries:
+              - name: India
+                cities:
+                  - id: ci307
+                    name: Bangalore
+                    sites:
+                      - id: st002
+                        name: Site1
+                        assets:
+                          - id: a200000000002
+                            name: Asset1
+                            kind: Washer
+                            classification: Class1
+                        shifts:
+                          - id: s001
+                            name: Shift1
+                          - id: s002
+                            name: Shift2
+                  - id: ci308
+                    name: Hyderabad
+                    sites:
+                      - id: st003
+                        name: Site3
+                        assets:
+                          - id: a200000000003
+                            name: Asset1
+                            kind: Washer
+                            classification: Class1
+                        shifts:
+                          - id: s001
+                            name: Shift1
+                          - id: s002
+                            name: Shift2
+  
+  singleSiteRequest:
+    type: object
+    required:
+      - filters
+    properties:
+      filters:
+        type: object
+        required:
+          - email
+          - start_time
+          - end_time
+          - timezone
+          - site_id
+          - global_account_id
+        properties:
+          email:
+            type: string
+            format: email
+          start_time:
+            type: string
+            format: datetime
+          end_time:
+            type: string
+            format: datetime'
+          timezone:
+            type: string
+          site_id:
+            type: string
+          global_account_id:
+            type: string
+    example:
+      filters:
+        email: dinesh.kd@diversey.com
+        start_time: 2017-11-15T06:34:42
+        end_time: 2017-11-21T06:34:42
+        timezone: Asia/Calcutta
+        site_id: stid02
+        global_account_id: "456"
+
+  singleSiteResponse:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - quality_status
+          - production_status
+        properties:
+          quality_status:
+            type: string
+            enum:
+              - MEETING_THRESHOLD
+              - NOT_MEETING_THRESHOLD
+              - NO_THRESHOLD
+          production_status:
+            type: string
+            enum:
+              - MEETING_THRESHOLD
+              - NOT_MEETING_THRESHOLD
+              - NO_THRESHOLD
+    example:
+      data:
+        quality_status: MEETING_THRESHOLD
+        production_status: NO_THRESHOLD
+
+  multipleSiteRequest:
+    type: object
+    required:
+      - filters
+    properties:
+      filters:
+        type: object
+        required:
+          - email
+          - start_time
+          - end_time
+          - timezone
+          - site_ids
+          - global_account_id
+        properties:
+          email:
+            type: string
+            format: email
+          start_time:
+            type: string
+            format: datetime
+          end_time:
+            type: string
+            format: datetime'
+          timezone:
+            type: string
+          site_ids:
+            type: array
+            items:
+              type: string
+          global_account_id:
+            type: string
+    example:
+      filters:
+        email: dinesh.kd@diversey.com
+        start_time: 2017-11-15T06:34:42
+        end_time: 2017-11-21T06:34:42
+        timezone: Asia/Calcutta
+        site_id:
+          - stid02
+          - stid03
+          - stid04
+        global_account_id: "456"
+
+  multipleSiteResponse:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        required:
+          - quality_status
+          - production_status
+        properties:
+          quality_status:
+            type: number
+          production_status:
+            type: number
+    example:
+      data:
+        quality_status: 80
+        production_status: 50
+  
+  genericFilterRequest:
+    type: object
+    required:
+      - email
+      - units
+      - timezone
+      - filters
+    properties:
+      email:
+        type: string
+      units:
+        type: object
+        required:
+          - weight
+        properties:
+          weight:
+            type: string
+      timezone:
+        type: string
+      filters:
+        type: object
+        $ref: "#/definitions/genericFilterRequestData"
+    example:
+      email: vijay.soni@sealedair.com
+      units:
+        weight: ''
+      timezone: 'Asia/Calcutta'
+      filters:
+        start_date: '2017-06-12T14:00:00Z'
+        end_date: '2017-06-12T18:00:00Z'
+        offset: '4:30'
+        group_by: day
+        customer: '1234'
+        sites:
+        - 'st033'
+        assets:
+        - '200000000003'
+        classifications: []
+        shifts:
+        - 'shift10'
+
+  genericFilterRequestData:
+    type: object
+    required:
+      - start_date
+      - end_date
+      - group_by
+      - customer
+      - sites
+      - assets
+      - classifications
+      - shifts
+      - offset
+    properties:
+      email:
+        type: string
+      start_date:
+        type: string
+        format: datetime
+        description: Start date timestamp in UTC format
+      end_date:
+        type: string
+        format: datetime
+        description: End date timestamp in UTC format
+      group_by:
+        type: string
+        enum:
+          - hour
+          - day
+          - week
+          - month
+      customer:
+        type: string
+      offset:
+        type: string
+      sites:
+        type: array
+        items:
+          type: string
+      assets:
+        type: array
+        items:
+          type: string
+      classifications:
+        type: array
+        items:
+          type: string
+      shifts:
+        type: array
+        items:
+          type: string
+
+  production:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/productionGraphData"
+    example:
+      data:
+        unit: "lbs"
+        timezone: "Asia/Calcutta"
+        total: 429
+        threshold: 23.345
+        wash_cycles: 56
+        series:
+          - datetime: "2017-06-26T00:00"
+            linen_washed: 4393
+          - datetime: "2017-06-27T00:00"
+            linen_washed: 5250
+          - datetime: "2017-06-28T00:00"
+            linen_washed: 5717
+          - datetime: "2017-06-29T00:00"
+            linen_washed: 6995
+          - datetime: "2017-06-30T00:00"
+            linen_washed: 9703
+          - datetime: "2017-07-01T00:00"
+            linen_washed: 1199
+          - datetime: "2017-07-02T00:00"
+            linen_washed: 4732
+
+  productionGraphData:
+    type: object
+    required:
+      - series
+      - total
+      - timezone
+      - threshold
+      - unit
+      - wash_cycles
+    properties:
+      unit:
+        type: string
+        enum:
+          - kg
+          - lbs
+      total:
+        type: number
+      threshold:
+        type: number
+      timezone:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/productionSeriesGraphData"
+
+  productionSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - linen_washed
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      linen_washed:
+        type: number
+
+  qualityRewashes:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/qualityGraphData"
+    example:
+      data:
+        average: 87
+        threshold: 21.11
+        threshold_percent: 45.23
+        timezone: "Asia/Calcutta"
+        series:
+          - datetime: "2017-06-26T00:00"
+            rewash: 27.8
+            percentage: 33
+          - datetime: "2017-06-27T00:00"
+            rewash: 12.2
+            percentage: 15
+          - datetime: "2017-06-28T00:00"
+            rewash: 16.8
+            percentage: 22
+          - datetime: "2017-06-29T00:00"
+            rewash: 3.2
+            percentage: 1.2
+          - datetime: "2017-06-30T00:00"
+            rewash: 5.9
+            percentage: 3.4
+          - datetime: "2017-06-01T00:00"
+            rewash: 4.1
+            percentage: 2.3
+          - datetime: "2017-07-02T00:00"
+            rewash: 10.0
+            percentage: 11
+
+  qualityGraphData:
+    type: object
+    required:
+      - average
+      - timezone
+      - threshold
+      - threshold_percent
+      - series
+    properties:
+      average:
+        type: number
+      timezone:
+        type: string
+      threshold:
+        type: number
+      threshold_percent:
+        type: number
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/qualitySeriesGraphData"
+
+  qualitySeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - rewash
+      - percentage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      rewash:
+        type: number
+      percentage:
+        type: number
+
+  consumptionComboData:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/consumptionComboDataGraphData"
+    example:
+      data:
+        consumption_percentage: 89
+        timezone: "Asia/Calcutta"
+        water:
+          unit: "m3"
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 267.8
+            - datetime: "2017-06-27T00:00"
+              usage: 400.2
+            - datetime: "2017-06-28T00:00"
+              usage: 160.8
+            - datetime: "2017-06-29T00:00"
+              usage: 763.2
+            - datetime: "2017-06-30T00:00"
+              usage: 500.9
+            - datetime: "2017-07-01T00:00"
+              usage: 400.1
+            - datetime: "2017-07-02T00:00"
+              usage: 100.0
+        energy:
+          unit: "kWh"
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 321.8
+            - datetime: "2017-06-27T00:00"
+              usage: 322.2
+            - datetime: "2017-06-28T00:00"
+              usage: 317.8
+            - datetime: "2017-06-29T00:00"
+              usage: 332.2
+            - datetime: "2017-06-30T00:00"
+              usage: 342.9
+            - datetime: "2017-07-01T00:00"
+              usage: 301.1
+            - datetime: "2017-07-02T00:00"
+              usage: 328.0
+        product:
+          unit: "l"
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 700.8
+            - datetime: "2017-06-27T00:00"
+              usage: 211.2
+            - datetime: "2017-06-28T00:00"
+              usage: 600.8
+            - datetime: "2017-06-29T00:00"
+              usage: 500.2
+            - datetime: "2017-06-30T00:00"
+              usage: 400.9
+            - datetime: "2017-07-01T00:00"
+              usage: 391.1
+            - datetime: "2017-07-02T00:00"
+              usage: 600.0
+
+  consumptionComboDataGraphData:
+    type: object
+    required:
+      - consumption_percentage
+      - timezone
+      - water
+      - energy
+      - product
+    properties:
+      consumption_percentage:
+        type: number
+      timezone:
+        type: string
+      water:
+        type: object
+        items:
+          $ref: "#/definitions/consumptionComboDataWaterGraphData"
+      energy:
+        type: object
+        items:
+          $ref: "#/definitions/consumptionComboDataEnergyGraphData"
+      product:
+        type: object
+        items:
+          $ref: "#/definitions/consumptionComboDataProductGraphData"
+
+  consumptionComboDataWaterGraphData:
+    type: object
+    required:
+      - unit
+      - series
+    properties:
+      unit:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/consumptionComboDataSeriesWaterGraphData"
+
+  consumptionComboDataSeriesWaterGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  consumptionComboDataEnergyGraphData:
+    type: object
+    required:
+      - unit
+      - series
+    properties:
+      unit:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/consumptionComboDataSeriesEnergyGraphData"
+
+  consumptionComboDataSeriesEnergyGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  consumptionComboDataProductGraphData:
+    type: object
+    required:
+      - unit
+      - series
+    properties:
+      unit:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/consumptionComboDataSeriesProductGraphData"
+
+  consumptionComboDataSeriesProductGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+  
+  costs:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/costsGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        water:
+          unit: "USD"
+          total: 11
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 267.8
+            - datetime: "2017-06-27T00:00"
+              usage: 400.2
+            - datetime: "2017-06-28T00:00"
+              usage: 160.8
+            - datetime: "2017-06-29T00:00"
+              usage: 763.2
+            - datetime: "2017-06-30T00:00"
+              usage: 500.9
+            - datetime: "2017-07-01T00:00"
+              usage: 400.1
+            - datetime: "2017-07-02T00:00"
+              usage: 100.0
+        energy:
+          unit: "USD"
+          total: 22
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 321.8
+            - datetime: "2017-06-27T00:00"
+              usage: 322.2
+            - datetime: "2017-06-28T00:00"
+              usage: 317.8
+            - datetime: "2017-06-29T00:00"
+              usage: 332.2
+            - datetime: "2017-06-30T00:00"
+              usage: 342.9
+            - datetime: "2017-07-01T00:00"
+              usage: 301.1
+            - datetime: "2017-07-02T00:00"
+              usage: 328.0
+        product:
+          unit: "USD"
+          total: 55
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 700.8
+            - datetime: "2017-06-27T00:00"
+              usage: 211.2
+            - datetime: "2017-06-28T00:00"
+              usage: 600.8
+            - datetime: "2017-06-29T00:00"
+              usage: 500.2
+            - datetime: "2017-06-30T00:00"
+              usage: 400.9
+            - datetime: "2017-07-01T00:00"
+              usage: 391.1
+            - datetime: "2017-07-02T00:00"
+              usage: 600.0
+
+  overall-cost:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/costsGraphData"
+    example:
+      data:
+        total: 1511373.29
+        total_per_linen: 12345.67
+        timezone: "Asia/Calcutta"
+        nocostsetting: "site 123 does not have cost settings"
+        currency: "USD"
+        water:
+          threshold	:	123456.78
+          threshold_per_linen	:	1234.56
+          total	:	1370472.87
+          total_per_linen	:	1234.12
+        energy:
+          threshold	:	123456.78
+          threshold_per_linen	:	1234.56
+          total	:	1370472.87
+          total_per_linen	:	1234.12
+        product:
+          threshold	:	123456.78
+          threshold_per_linen	:	1234.56
+          total	:	1370472.87
+          total_per_linen	:	1234.12
+        water_series:
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+        energy_series:
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+        product_series:
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+            - datetime	:	2018-05-18
+              total	:	195339.09
+              per_linen	:	63.63
+  
+  overallcost_generic:
+    type: object
+    required: 
+      - threshold
+      - threshold_per_linen
+      - total
+      - total_per_linen
+    properties:
+      threshold:
+        type: number
+      threshold_per_linen:
+        type: number
+      total:
+        type: number
+      total_per_linen:
+        type: number
+    
+  
+  overallcostseries_generic:
+    type: object
+    required: 
+      - datetime
+      - total
+      - per_linen
+    properties:
+      datetime:
+        type: string
+      total:
+        type: number
+      per_linen:
+        type: number
+
+  costsGraphData:
+    type: object
+    required:
+      - total
+      - total_per_linen
+      - timezone
+      - nocostsetting
+      - currency
+      - water
+      - energy
+      - product
+      - water_series
+      - energy_series
+      - product_series
+    properties:
+      total:
+        type: number
+      total_per_linen:
+        type: number
+      timezone:
+        type: string
+      nocostsetting:
+        type: string
+      water:
+        type: object
+        items:
+          $ref: "#/definitions/overallcost_generic"
+      energy:
+        type: object
+        items:
+          $ref: "#/definitions/overallcost_generic"
+      product:
+        type: object
+        items:
+          $ref: "#/definitions/overallcost_generic"
+      water_series:
+        type: array
+        items:
+          $ref: "#/definitions/overallcostseries_generic"
+      energy_series:
+        type: array
+        items:
+          $ref: "#/definitions/overallcostseries_generic"
+      product_series:
+        type: array
+        items:
+          $ref: "#/definitions/overallcostseries_generic"
+
+  costWaterGraphData:
+    type: object
+    required:
+      - unit
+      - total
+      - series
+    properties:
+      unit:
+        type: string
+      total:
+        type: number
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/costSeriesWaterGraphData"
+
+  costSeriesWaterGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  costEnergyGraphData:
+    type: object
+    required:
+      - unit
+      - total
+      - series
+    properties:
+      unit:
+        type: string
+      total:
+        type: number
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/costSeriesEnergyGraphData"
+
+  costSeriesEnergyGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  costProductGraphData:
+    type: object
+    required:
+      - unit
+      - total
+      - series
+    properties:
+      unit:
+        type: string
+      total:
+        type: number
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/costSeriesProductGraphData"
+
+  costSeriesProductGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  productionOccupancyUtilization:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/productionOccupancyUtilizationGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        no_shifts: "site1 doesn't have shifts defined"
+        series:
+          - datetime: "2017-06-26T00:00"
+            usage: 22.8
+          - datetime: "2017-06-27T00:00"
+            usage: 44.2
+          - datetime: "2017-06-28T00:00"
+            usage: 66.8
+          - datetime: "2017-06-29T00:00"
+            usage: 11.2
+          - datetime: "2017-06-30T00:00"
+            usage: 99.9
+          - datetime: "2017-07-01T00:00"
+            usage: 8.1
+          - datetime: "2017-07-02T00:00"
+            usage: 23.0
+
+  productionOccupancyUtilizationGraphData:
+    type: object
+    required:
+      - timezone
+      - no_shifts
+      - series
+    properties:
+      timezone:
+        type: string
+      no_shifts:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/productionOccupancyUtilizationSeriesGraphData"
+
+  productionOccupancyUtilizationSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  productionCapacityUtilization:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/productionCapacityUtilizationGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        series:
+          - datetime: "2017-06-26T00:00"
+            usage: 27.8
+          - datetime: "2017-06-27T00:00"
+            usage: 12.2
+          - datetime: "2017-06-28T00:00"
+            usage: 16.8
+          - datetime: "2017-06-29T00:00"
+            usage: 3.2
+          - datetime: "2017-06-30T00:00"
+            usage: 5.9
+          - datetime: "2017-07-01T00:00"
+            usage: 4.1
+          - datetime: "2017-07-02T00:00"
+            usage: 10.0
+
+  productionCapacityUtilizationGraphData:
+    type: object
+    required:
+      - timezone
+      - series
+    properties:
+      timezone:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/productionCapacityUtilizationSeriesGraphData"
+
+  productionCapacityUtilizationSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  productionClassificationsPercentage:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/productionClassificationsPercentageGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        series:
+          - name: "Classification 1"
+            usage: 27.8
+            percentage: 22
+          - name: "Classification 2"
+            usage: 12.2
+            percentage: 17
+          - name: "Classification 3"
+            usage: 16.8
+            percentage: 19
+          - name: "Classification 4"
+            usage: 3.2
+            percentage: 7
+          - name: "Classification 5"
+            usage: 5.9
+            percentage: 18
+          - name: "Other"
+            usage: 10
+            percentage: 21
+
+  productionClassificationsPercentageGraphData:
+    type: object
+    required: 
+      - timezone
+      - series
+    properties:
+      timezone:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/productionClassificationsPercentageSeriesGraphData"
+
+  productionClassificationsPercentageSeriesGraphData:
+    type: object
+    required:
+      - name
+      - usage
+      - percentage
+    properties:
+      name:
+        type: string
+      usage:
+        type: number
+      percentage:
+        type: number
+  
+  simpleviewNotifications:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/simpleviewNotificationsGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        classifications:
+          - name: "Low volume"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 26
+              - datetime: "2017-06-27T00:00"
+                count: 40
+              - datetime: "2017-06-28T00:00"
+                count: 16
+              - datetime: "2017-06-29T00:00"
+                count: 76
+              - datetime: "2017-06-30T00:00"
+                count: 50
+              - datetime: "2017-07-01T00:00"
+                count: 40
+              - datetime: "2017-07-02T00:00"
+                count: 10
+          - name: "Low chemical"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 62
+              - datetime: "2017-06-27T00:00"
+                count: 55
+              - datetime: "2017-06-28T00:00"
+                count: 62
+              - datetime: "2017-06-29T00:00"
+                count: 75
+              - datetime: "2017-06-30T00:00"
+                count: 25
+              - datetime: "2017-07-01T00:00"
+                count: 36
+              - datetime: "2017-07-02T00:00"
+                count: 33
+          - name: "Low water"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 34
+              - datetime: "2017-06-27T00:00"
+                count: 38
+              - datetime: "2017-06-28T00:00"
+                count: 54
+              - datetime: "2017-06-29T00:00"
+                count: 33
+              - datetime: "2017-06-30T00:00"
+                count: 65
+              - datetime: "2017-07-01T00:00"
+                count: 74
+              - datetime: "2017-07-02T00:00"
+                count: 33
+          - name: "Low battery"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 44
+              - datetime: "2017-06-27T00:00"
+                count: 62
+              - datetime: "2017-06-28T00:00"
+                count: 42
+              - datetime: "2017-06-29T00:00"
+                count: 64
+              - datetime: "2017-06-30T00:00"
+                count: 54
+              - datetime: "2017-07-01T00:00"
+                count: 68
+              - datetime: "2017-07-02T00:00"
+                count: 39
+          - name: "Other"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 32
+              - datetime: "2017-06-27T00:00"
+                count: 13
+              - datetime: "2017-06-28T00:00"
+                count: 6
+              - datetime: "2017-06-29T00:00"
+                count: 22
+              - datetime: "2017-06-30T00:00"
+                count: 66
+              - datetime: "2017-07-01T00:00"
+                count: 28
+              - datetime: "2017-07-02T00:00"
+                count: 11
+
+  productionClassifications:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/productionClassificationsGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        classifications:
+          - name: "Classification 1"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 26
+              - datetime: "2017-06-27T00:00"
+                count: 40
+              - datetime: "2017-06-28T00:00"
+                count: 16
+              - datetime: "2017-06-29T00:00"
+                count: 76
+              - datetime: "2017-06-30T00:00"
+                count: 50
+              - datetime: "2017-07-01T00:00"
+                count: 40
+              - datetime: "2017-07-02T00:00"
+                count: 10
+          - name: "Classification 2"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 62
+              - datetime: "2017-06-27T00:00"
+                count: 55
+              - datetime: "2017-06-28T00:00"
+                count: 62
+              - datetime: "2017-06-29T00:00"
+                count: 75
+              - datetime: "2017-06-30T00:00"
+                count: 25
+              - datetime: "2017-07-01T00:00"
+                count: 36
+              - datetime: "2017-07-02T00:00"
+                count: 33
+          - name: "Classification 3"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 34
+              - datetime: "2017-06-27T00:00"
+                count: 38
+              - datetime: "2017-06-28T00:00"
+                count: 54
+              - datetime: "2017-06-29T00:00"
+                count: 33
+              - datetime: "2017-06-30T00:00"
+                count: 65
+              - datetime: "2017-07-01T00:00"
+                count: 74
+              - datetime: "2017-07-02T00:00"
+                count: 33
+          - name: "Classification 4"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 44
+              - datetime: "2017-06-27T00:00"
+                count: 62
+              - datetime: "2017-06-28T00:00"
+                count: 42
+              - datetime: "2017-06-29T00:00"
+                count: 64
+              - datetime: "2017-06-30T00:00"
+                count: 54
+              - datetime: "2017-07-01T00:00"
+                count: 68
+              - datetime: "2017-07-02T00:00"
+                count: 39
+          - name: "Other"
+            series:
+              - datetime: "2017-06-26T00:00"
+                count: 32
+              - datetime: "2017-06-27T00:00"
+                count: 13
+              - datetime: "2017-06-28T00:00"
+                count: 6
+              - datetime: "2017-06-29T00:00"
+                count: 22
+              - datetime: "2017-06-30T00:00"
+                count: 66
+              - datetime: "2017-07-01T00:00"
+                count: 28
+              - datetime: "2017-07-02T00:00"
+                count: 11
+  simpleviewNotificationsGraphData:
+    type: object
+    required:
+      - timezone
+      - notifications
+    properties:
+      timezone:
+        type: string
+      notifications:
+        type: object
+        items:
+          $ref: "#/definitions/productionClassificationsObjectGraphData"
+
+  productionClassificationsGraphData:
+    type: object
+    required:
+      - timezone
+      - classifications
+    properties:
+      timezone:
+        type: string
+      classifications:
+        type: object
+        items:
+          $ref: "#/definitions/productionClassificationsObjectGraphData"
+
+  productionClassificationsObjectGraphData:
+    type: object
+    required:
+      - name
+      - series
+    properties:
+      name:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/productionClassificationsObjectSeriesGraphData"
+
+  productionClassificationsObjectSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - count
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      count:
+        type: number
+
+  productionDryerOccupancy:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/productionDryerOccupancyGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        series:
+          - datetime: "2017-06-26T00:00"
+            occupancy: 27.8
+          - datetime: "2017-06-27T00:00"
+            occupancy: 12.2
+          - datetime: "2017-06-28T00:00"
+            occupancy: 16.8
+          - datetime: "2017-06-29T00:00"
+            occupancy: 3.2
+          - datetime: "2017-06-30T00:00"
+            occupancy: 5.9
+
+  productionDryerOccupancyGraphData:
+    type: object
+    required:
+      - timezone
+      - series
+    properties:
+      timezone:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/productionDryerOccupancySeriesGraphData"
+
+  productionDryerOccupancySeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - occupancy
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      occupancy:
+        type: number
+  qualityNotificationsPercentageNoData:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+    example:
+      data:
+        message: "No Notifications for the selected filter"
+  qualityNotificationsPercentage:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/qualityNotificationsPercentageGraphData"
+    example:
+      data:
+        series:
+          - name: "Low Level"
+            usage: 19.8
+            percentage: 11.8
+          - name: "Notification Type 1"
+            usage: 28.2
+            percentage: 19.3
+          - name: "Notification Type 2"
+            usage: 23.8
+            percentage: 1.8
+          - name: "Notification Type 3"
+            usage: 19.8
+            percentage: 2.8
+          - name: "Notification Type 4"
+            usage: 8
+            percentage: 7.5
+
+  qualityNotificationsPercentageGraphData:
+    type: object
+    required:
+      - series
+    properties:
+     
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/qualityNotificationsPercentageSeriesGraphData"
+
+  qualityNotificationsPercentageSeriesGraphData:
+    type: object
+    required:
+      - name
+      - usage
+      - percentage
+    properties:
+      name:
+        type: string
+      usage:
+        type: number
+      percentage:
+        type: number
+
+  qualityNotifications:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/qualityNotificationsGraphData"
+    example:
+      data:
+        series:
+          - datetime: "2017-06-26T00:00"
+            count: 27
+          - datetime: "2017-06-27T00:00"
+            count: 12
+          - datetime: "2017-06-28T00:00"
+            count: 16
+          - datetime: "2017-06-29T00:00"
+            count: 31
+          - datetime: "2017-06-30T00:00"
+            count: 15
+          - datetime: "2017-07-01T00:00"
+            count: 14
+          - datetime: "2017-07-02T00:00"
+            count: 12
+
+  qualityNotificationsGraphData:
+    type: object
+    required:
+      - series
+    properties:
+      timezone:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/qualityNotificationsSeriesGraphData"
+
+  qualityNotificationsSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - count
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      count:
+        type: number
+
+  qualityAbortedWashesPercentage:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/qualityAbortedWashesPercentageGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        threshold_percent: 11.453
+        completed:
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 27
+            - datetime: "2017-06-27T00:00"
+              usage: 12
+            - datetime: "2017-06-28T00:00"
+              usage: 16
+            - datetime: "2017-06-29T00:00"
+              usage: 31
+            - datetime: "2017-06-30T00:00"
+              usage: 15
+            - datetime: "2017-07-01T00:00"
+              usage: 14
+            - datetime: "2017-07-02T00:00"
+              usage: 12
+        aborted:
+          series:
+            - datetime: "2017-06-26T00:00"
+              usage: 10
+            - datetime: "2017-06-27T00:00"
+              usage: 15
+            - datetime: "2017-06-28T00:00"
+              usage: 16
+            - datetime: "2017-06-29T00:00"
+              usage: 20
+            - datetime: "2017-06-28T00:00"
+              usage: 5
+            - datetime: "2017-06-28T00:00"
+              usage: 4
+            - datetime: "2017-06-28T00:00"
+              usage: 6
+
+  qualityAbortedWashesPercentageGraphData:
+    type: object
+    required:
+      - timezone
+      - completed
+      - threshold_percent
+      - aborted
+    properties:
+      timezone:
+        type: string
+      threshold_percent:
+        type: number
+      completed:
+        type: object
+        items:
+          $ref: "#/definitions/qualityAbortedWashesPercentageCompletedObjectData"
+      aborted:
+        type: object
+        items:
+          $ref: "#/definitions/qualityAbortedWashesPercentageAbortedObjectData"
+
+  qualityAbortedWashesPercentageCompletedObjectData:
+    type: object
+    required:
+      - series
+    properties:
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/qualityAbortedWashesPercentageCompletedSeriesGraphData"
+
+  qualityAbortedWashesPercentageCompletedSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  qualityAbortedWashesPercentageAbortedObjectData:
+    type: object
+    required:
+      - series
+      - unit
+    properties:
+      unit:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/qualityAbortedWashesPercentageAbortedSeriesGraphData"
+
+  qualityAbortedWashesPercentageAbortedSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  qualityAbortedWashes:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/qualityAbortedWashesGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        threshold: 45.212
+        series:
+          - datetime: "2017-06-26T00:00"
+            usage: 2
+          - datetime: "2017-06-27T00:00"
+            usage: 1
+          - datetime: "2017-06-28T00:00"
+            usage: 6
+          - datetime: "2017-06-29T00:00"
+            usage: 3
+          - datetime: "2017-06-30T00:00"
+            usage: 5
+          - datetime: "2017-07-01T00:00"
+            usage: 4
+          - datetime: "2017-07-02T00:00"
+            usage: 2
+
+  qualityAbortedWashesGraphData:
+    type: object
+    required:
+      - timezone
+      - threshold
+      - series
+    properties:
+      timezone:
+        type: string
+      threshold:
+        type: number
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/qualityAbortedWashesSeriesGraphData"
+
+  qualityAbortedWashesSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      usage:
+        type: number
+
+  consumptionWater:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/consumptionWaterGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        unit: "m3"
+        threshold: 11.11
+        threshold_per_linen: 10.12
+        series:
+          - datetime: "2017-06-26T00:00"
+            total_usage: 22
+            per_linen_usage: 1.2
+          - datetime: "2017-06-27T00:00"
+            total_usage: 44
+            per_linen_usage: 8.2
+          - datetime: "2017-06-28T00:00"
+            total_usage: 55
+            per_linen_usage: 5.7
+          - datetime: "2017-06-29T00:00"
+            total_usage: 77
+            per_linen_usage: 6.6
+          - datetime: "2017-06-30T00:00"
+            total_usage: 33
+            per_linen_usage: 2.2
+          - datetime: "2017-07-01T00:00"
+            total_usage: 44
+            per_linen_usage: 3
+          - datetime: "2017-07-02T00:00"
+            total_usage: 99
+            per_linen_usage: 11
+
+  consumptionWaterGraphData:
+    type: object
+    required:
+      - timezone
+      - threshold
+      - threshold_per_linen
+      - series
+      - unit
+    properties:
+      timezone:
+        type: string
+      unit:
+        type: string
+      threshold:
+        type: number
+      threshold_per_linen:
+        type: number
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/consumptionWaterSeriesGraphData"
+
+  consumptionWaterSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - total_usage
+      - per_linen_usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      total_usage:
+        type: number
+      per_linen_usage:
+        type: number
+
+  consumptionEnergyWasher:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/consumptionEnergyWasherGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        unit: "kWh"
+        threshold: 1.11
+        threshold_per_linen: 12.32
+        series:
+          - datetime: "2017-06-26T00:00"
+            total_usage: 2222
+            per_linen_usage: 1111
+          - datetime: "2017-06-27T00:00"
+            total_usage: 4444
+            per_linen_usage: 2222
+          - datetime: "2017-06-28T00:00"
+            total_usage: 5555
+            per_linen_usage: 6666
+          - datetime: "2017-06-29T00:00"
+            total_usage: 2222
+            per_linen_usage: 3333
+          - datetime: "2017-06-30T00:00"
+            total_usage: 7777
+            per_linen_usage: 5555
+          - datetime: "2017-07-01T00:00"
+            total_usage: 9999
+            per_linen_usage: 7777
+          - datetime: "2017-07-02T00:00"
+            total_usage: 5555
+            per_linen_usage: 9999
+
+  consumptionEnergyWasherGraphData:
+    type: object
+    required:
+      - timezone
+      - series
+      - threshold
+      - threshold_per_linen
+      - unit
+    properties:
+      timezone:
+        type: string
+      threshold:
+        type: number
+      threshold_per_linen:
+        type: number
+      unit:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/consumptionEnergyWasherSeriesGraphData"
+
+  consumptionEnergyWasherSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - total_usage
+      - per_linen_usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      total_usage:
+        type: number
+      per_linen_usage:
+        type: number
+
+  consumptionProduct:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/consumptionProductGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        unit: "l"
+        threshold: 2.34
+        threshold_per_linen: 34.221
+        series:
+          - datetime: "2017-06-26T00:00"
+            total_usage: 5555
+            per_linen_usage: 3333
+          - datetime: "2017-06-27T00:00"
+            total_usage: 2000
+            per_linen_usage: 4444
+          - datetime: "2017-06-28T00:00"
+            total_usage: 8888
+            per_linen_usage: 2222
+          - datetime: "2017-06-29T00:00"
+            total_usage: 7777
+            per_linen_usage: 6666
+          - datetime: "2017-06-30T00:00"
+            total_usage: 9999
+            per_linen_usage: 1111
+          - datetime: "2017-07-01T00:00"
+            total_usage: 6666
+            per_linen_usage: 3333
+          - datetime: "2017-07-02T00:00"
+            total_usage: 3333
+            per_linen_usage: 5555
+
+  consumptionProductGraphData:
+    type: object
+    required:
+      - timezone
+      - series
+      - threshold
+      - threshold_per_linen
+      - unit
+    properties:
+      timezone:
+        type: string
+      unit:
+        type: string
+      threshold:
+        type: number
+      threshold_per_linen:
+        type: number
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/consumptionProductSeriesGraphData"
+
+  consumptionProductSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - total_usage
+      - per_linen_usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      total_usage:
+        type: number
+      per_linen_usage:
+        type: number
+
+  consumptionEnergyDryer:
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+        $ref: "#/definitions/consumptionEnergyDryerGraphData"
+    example:
+      data:
+        timezone: "Asia/Calcutta"
+        unit: "kWh"
+        series:
+          - datetime: "2017-06-26T00:00"
+            total_usage: 8662
+            per_linen_usage: 2222
+          - datetime: "2017-06-27T00:00"
+            total_usage: 3333
+            per_linen_usage: 4444
+          - datetime: "2017-06-28T00:00"
+            total_usage: 5555
+            per_linen_usage: 6666
+          - datetime: "2017-06-29T00:00"
+            total_usage: 7777
+            per_linen_usage: 9999
+          - datetime: "2017-06-30T00:00"
+            total_usage: 4444
+            per_linen_usage: 5555
+          - datetime: "2017-07-01T00:00"
+            total_usage: 5555
+            per_linen_usage: 1111
+          - datetime: "2017-07-02T00:00"
+            total_usage: 3333
+            per_linen_usage: 8888
+
+  consumptionEnergyDryerGraphData:
+    type: object
+    required:
+      - timezone
+      - series
+      - unit
+    properties:
+      timezone:
+        type: string
+      unit:
+        type: string
+      series:
+        type: array
+        items:
+          $ref: "#/definitions/consumptionEnergyDryerSeriesGraphData"
+
+  consumptionEnergyDryerSeriesGraphData:
+    type: object
+    required:
+      - datetime
+      - total_usage
+      - per_linen_usage
+    properties:
+      datetime:
+        type: string
+        format: datetime
+      total_usage:
+        type: number
+      per_linen_usage:
+        type: number
+
+  UnauthorizedAccessError:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+    example:
+      code: 401
+      message: "Unauthorized Access"
+
+  NoDataAvailableError:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        enum:
+          - 404
+          - 412
+        format: int32
+      message:
+        type: string
+    example:
+      code: 404
+      message: "No data available"
+      
+  InternalServerError:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+    example:
+      code: 500
+      message: "Internal Server Error"
+
+  ServiceUnavailableError:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+    example:
+      code: 503
+      message: "Service Unavailable Error"
+
+  requestDispensers:
+    type: object
+    required:
+      - global_account_id
+      - current_datetime
+      - timezone
+    properties:
+      global_account_id:
+        type: string
+      current_datetime:
+        type: string
+      timezone:
+        type: string
+        
+    example:
+      global_account_id: "a1b2c3"
+      current_datetime: "2017-10-23T12:47"
+      timezone: "Asia/Calcutta"
+  
+  responseDispensers200:
+    type: object
+    required:
+      - success
+      - data
+    properties:
+      success:
+        type: boolean
+      data:
+        type: object
+        required:
+          - total_production
+          - unit
+          - dispensers
+        properties:
+          total_production:
+            type: integer
+          unit:
+            type: string
+          dispensers:
+            type: object
+            required:
+              - id
+              - name
+            properties:
+              id:
+                type: string
+              name: 
+                type: string
+                
+    example:
+      success: true
+      data:
+        total_production: 123
+        unit: "kg"
+        dispensers:
+          - id: "dda1b1c1"
+            name: 'Dispenser 1'
+          - id: "dda2b2c2"
+            name: 'Dispenser 2'
+              
+  requestWashers:
+    type: object
+    required:
+      - global_account_id
+    properties:
+      global_account_id:
+        type: string
+        
+    example:
+      global_account_id: "a1b2c3"
+  
+  responseWashers200:
+    type: object
+    required:
+      - success
+      - data
+    properties:
+      success:
+        type: boolean
+      data:
+        type: object
+        required:
+          - id
+          - serial_no
+          - name
+          - image
+          - alert_infos
+          - washers
+        properties:
+          id:
+            type: string
+          serial_no:
+            type: string
+          name:
+            type: string
+          alert_infos:
+            type: array
+            items:
+              type: string
+          washers:
+            type: object
+            required:
+              - id
+              - name
+              - serial_no
+              - image
+              - program
+              - classification_no
+              - start_time
+              - status
+              - message
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              serial_no:
+                type: string
+              image:
+                type: string
+              program:
+                type: string
+              classification_no:
+                type: string
+              start_time:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+                
+    example:
+      success: true
+      data:
+        id: "dda1b1c1"
+        name: "Dispenser 1"
+        serial_no: "4567890"
+        image: null
+        alert_infos:
+          - "Low chemical"
+          - "Completing soon"
+        washers:
+          - id: "WWz1y1x1"
+            name: "Electrolux"
+            serial_no: "901238"
+            image: null
+            program: "Bed Linen"
+            classification_no: "2375"
+            start_time: "2017-10-23T13:54"
+            status: "Online"
+            message: "Everything is within parameters"
+          - id: "WWz2y2x2"
+            name: "Miele 1"
+            serial_no: "258472"
+            image: null
+            program: "Towels"
+            classification_no: "3959"
+            start_time: "2017-10-23T08:13"
+            status: "Issue"
+            message: "Error message 1"
+          - id: "WWz3y3x3"
+            name: "Samsung"
+            serial_no: "627348"
+            image: null
+            program: "Towels"
+            classification_no: "3959"
+            start_time: "2017-10-23T11:36"
+            status: "Not in use"
+            message: "Idle for 30min"
